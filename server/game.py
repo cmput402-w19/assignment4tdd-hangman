@@ -5,6 +5,8 @@ class Game:
         self.correct = 0
         self.incorrect = 0
         self.players = dict()
+        self.correct_guesses = set()
+        self.incorrect_guessed = set()
 
     def generate_word(self):
         """Generates a word to use in the game"""
@@ -20,4 +22,8 @@ class Game:
 
     def get_score(self):
         """Gets the full scoreboard of guess for each player"""
+        pass
+
+    def get_guessed(self):
+        """Gets the list of guessed letters formatted as a string"""
         pass

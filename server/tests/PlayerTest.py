@@ -48,3 +48,14 @@ class TestGame(TestCase):
         self.game.incorrect = 2
 
         self.assertFalse(self.game.has_ended())
+
+    def test_get_guessed_empty(self):
+        self.assertEqual(self.game.get_guessed(), "No letters guessed.")
+
+    def test_get_guessed_nonempty_correct(self):
+        self.game.correct_guesses = {"a"}
+        self.assertEqual(self.game.get_guessed(), "Correct: a | Incorrect: None")
+
+    def test_get_guessed_non_empty_incorrect(self):
+        self.game.incorrect_guesses = {"a"}
+        self.assertEqual(self.game.get_guessed(), "Correct: None | Incorect: a")

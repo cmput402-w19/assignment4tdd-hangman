@@ -3,38 +3,50 @@ class Body:
         self._parts = list()
 
     def add_part(self, bodyPart):
-        pass
+        if not isinstance(bodyPart, BodyPart):
+            return
+        for part in self._parts:
+            if isinstance(bodyPart, type(part)):
+                return
+        self._parts.append(bodyPart)
 
     def draw(self):
         pass
 
     def get_part_count(self):
-        pass
+        return len(self._parts)
 
     def is_dead(self):
-        pass
+        return self.get_part_count() == 7
 
 class BodyPart:
     def get_drawable(self):
         pass
 
 class Head(BodyPart):
-    pass
+    def get_drawable(self):
+        return "[o_o]"
 
 class Torso(BodyPart):
-    pass
+    def get_drawable(self):
+        return "|"
 
 class LeftArm(BodyPart):
-    pass
+    def get_drawable(self):
+        return "\\"
 
 class RightArm(BodyPart):
-    pass
+    def get_drawable(self):
+        return "/"
 
 class LeftLeg(BodyPart):
-    pass
+    def get_drawable(self):
+        return "_/"
 
 class RightLeg(BodyPart):
-    pass
+    def get_drawable(self):
+        return "\\_"
 
 class Noose(BodyPart):
-    pass
+    def get_drawable(self):
+        return "|\n|"

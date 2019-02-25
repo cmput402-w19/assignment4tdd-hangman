@@ -2,7 +2,7 @@ import unittest
 from client.body import *
 from client.bodyparts import *
 
-class BodyPartTestCase(unittest.TestCase):
+class BodyTestCase(unittest.TestCase):
     def setUp(self):
         self.body = Body()
 

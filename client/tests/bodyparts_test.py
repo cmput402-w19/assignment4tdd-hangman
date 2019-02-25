@@ -85,7 +85,7 @@ class BodyPartTestCase(unittest.TestCase):
         parts = [Noose(), Head(), Torso(), LeftArm(), RightArm(), LeftLeg(), RightLeg()]
         drawables = ["|\n|", "[o_o]", "|", "\\", "/", "_/", "\\_"]
         for i in range(len(parts)):
-            self.assertIs(parts[i], drawables[i])
+            self.assertIs(parts[i].get_drawable(), drawables[i])
 
 if __name__ == '__main__':
     unittest.main()

@@ -1,5 +1,5 @@
 from unittest import TestCase, mock
-import game
+import server.game as game
 
 class TestGame(TestCase):
 
@@ -9,8 +9,13 @@ class TestGame(TestCase):
             word = g.generate_word()
             self.assertEqual(word, "orange")
 
-    def test_gernate_word_greater_than_5(self):
-        pass
+    def test_generate_word_greater_than_5(self):
+        with mock.patch(game.__name__ + ".Datamuse.words", return_value=[{'score': 1, 'word': 'orange'}, {'score': 1, 'word': 'the'}]):
+            g = game.Game()
+            word = g.generate_word()
+
+            self.assertEqual(word, "orange")
+            self.assertTrue(len(word) > 5)
 
     def test_guess_correct_lowercase(self):
         g = game.Game()

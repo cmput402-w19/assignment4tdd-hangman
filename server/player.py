@@ -5,10 +5,11 @@ class Player:
         self.incorrect = 0
 
     def get_score(self):
-        pass
+        return (self.correct, self.incorrect)
 
     def increment_correct(self):
-        pass
+        self.correct += 1
 
     def increment_incorrect(self):
-        pass
+        self.incorrect += 1
+

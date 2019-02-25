@@ -21,7 +21,7 @@ class BodyPartTestCase(unittest.TestCase):
         for i in range(len(parts)):
             cordinates = parts[i].get_cordinates()
             drawables = parts[i].get_drawables()
-            for j in len(cordinates):
+            for j in range(len(cordinates)):
                 cordinate = [j]
                 drawable= drawables[j]
                 self.assertEqual(self.stickFigure[cordinate[1]][cordinate[0]], drawable)

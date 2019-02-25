@@ -78,22 +78,23 @@ class TestGame(TestCase):
         self.assertIn("test", self.game.players)
 
     def test_get_score_no_players(self):
-        self.assertEqual(self.game.get_score(), {"total": (0, 0)})
+        self.assertEqual(self.game.get_score(), {"total": (0, 0), "players": {}})
 
     def test_get_score_one_player(self):
         mock_player = mock.MagicMock()
         mock_player.get_score = mock.MagicMock()
-        mock_player.get_score.return_value = {"correct":1, "incorrect":2}
+        mock_player.get_score.return_value = (1, 2)
 
         self.game.players["test"] = mock_player
 
         self.game.correct = 1
         self.game.incorrect = 2
 
-        self.assertEqual(self.assertEqual(self.game.get_score(), {"total": (1, 2), "test": (1,2)}))
+        self.assertEqual(self.game.get_score(), {"total": (1, 2), "players":{"test": (1,2)}})
 
     def test_get_score_multi_player(self):
         mock_player1 = mock.MagicMock()
+
         mock_player1.get_score = mock.MagicMock()
         mock_player1.get_score.return_value = (1, 2)
 
@@ -107,4 +108,4 @@ class TestGame(TestCase):
         self.game.correct = 4
         self.game.incorrect = 3
 
-        self.assertEqual(self.assertEqual(self.game.get_score(), {"total": (4, 3), "alice": (1, 2), "bob": (3, 1)}))
+        self.assertEqual(self.game.get_score(), {"total": (4, 3), "players": {"alice": (1, 2), "bob": (3, 1)}})

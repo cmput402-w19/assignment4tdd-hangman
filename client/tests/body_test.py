@@ -1,4 +1,5 @@
 import unittest
+from unittest import mock
 from client.body import *
 from client.bodyparts import *
 
@@ -90,9 +91,9 @@ class BodyTestCase(unittest.TestCase):
 
     def test_body_drawable(self):
         head = Head()
-        head.get_drawables = unittest.mock.Mock()
+        head.get_drawables = mock.Mock()
         head.get_drawables.return_value = ("123")
-        head.get_cordinates = unittest.mock.Mock()
+        head.get_cordinates = mock.Mock()
         head.get_cordinates.return_value = ((0, 1), (0, 2), (3, 3))
 
         self.body.add_part(head)

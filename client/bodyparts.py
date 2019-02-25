@@ -1,52 +1,47 @@
-class Body:
-    def __init__(self):
-        self._parts = list()
-
-    def add_part(self, bodyPart):
-        if not isinstance(bodyPart, BodyPart):
-            return
-        for part in self._parts:
-            if isinstance(bodyPart, type(part)):
-                return
-        self._parts.append(bodyPart)
-
-    def draw(self):
-        pass
-
-    def get_part_count(self):
-        return len(self._parts)
-
-    def is_dead(self):
-        return self.get_part_count() == 7
-
 class BodyPart:
-    def get_drawable(self):
+    def get_cordinates(self):
+        pass
+    def get_drawables(self):
         pass
 
 class Head(BodyPart):
-    def get_drawable(self):
-        return "[o_o]"
+    def get_cordinates(self):
+        return ((0, 2), (1, 2), (2, 2), (3, 2), (4, 2))
+    def get_drawables(self):
+        return "(o_O)"
 
 class Torso(BodyPart):
-    def get_drawable(self):
-        return "|"
+    def get_cordinates(self):
+        return ((2, 3), (2, 4))
+    def get_drawables(self):
+        return "||"
 
 class LeftArm(BodyPart):
-    def get_drawable(self):
-        return "\\"
-
-class RightArm(BodyPart):
-    def get_drawable(self):
+    def get_cordinates(self):
+        return ((1, 3),)
+    def get_drawables(self):
         return "/"
 
+class RightArm(BodyPart):
+    def get_cordinates(self):
+        return ((3, 3),)
+    def get_drawables(self):
+        return "\\"
+
 class LeftLeg(BodyPart):
-    def get_drawable(self):
+    def get_cordinates(self):
+        return ((0, 5), (1, 5))
+    def get_drawables(self):
         return "_/"
 
 class RightLeg(BodyPart):
-    def get_drawable(self):
+    def get_cordinates(self):
+        return ((3, 5), (4, 5))
+    def get_drawables(self):
         return "\\_"
 
 class Noose(BodyPart):
-    def get_drawable(self):
-        return "|\n|"
+    def get_cordinates(self):
+        return ((2, 0), (2, 1))
+    def get_drawables(self):
+        return "||"

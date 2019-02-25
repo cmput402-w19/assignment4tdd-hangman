@@ -85,9 +85,9 @@ class BodyTestCase(unittest.TestCase):
 
     def test_empty_body_drawable(self):
         lines = self.body.get_drawable().split("\n")
-        self.assertIs(len(drawable), 6)
+        self.assertIs(len(lines), 6)
         for line in lines:
-            self.assertIs(len(drawable), 5)
+            self.assertIs(len(line), 5)
 
     def test_body_drawable(self):
         head = Head()

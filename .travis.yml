@@ -5,4 +5,8 @@ install:
   - pip install -r requirements.txt
 # command to run tests
 script:
-  - python -m unittest discover -p "*_test.py"
+  # - python -m unittest discover -p "*_test.py"
+  - coverage run --source . -m unittest discover -p "*_test.py"
+
+after_success:
+  - coveralls

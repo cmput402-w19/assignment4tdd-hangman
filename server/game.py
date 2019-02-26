@@ -54,4 +54,4 @@ class Game:
             "incorrect": self.incorrect
         }
 
-        return state
+        return {"type": "UPDATE_STATE", "data": state}

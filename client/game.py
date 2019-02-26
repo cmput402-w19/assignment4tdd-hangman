@@ -1,6 +1,6 @@
 import sys
 import asyncio
-import websockets
+import websocket
 import json
 from client.body import *
 from client.bodyparts import *
@@ -20,15 +20,17 @@ class Game:
         self._incorrectCount = 0
 
     async def start(self):
-        async with websockets.connect("ws://" + self.ip + ":8080") as self.websocket:
-            self.send_username()
-            self._inputThread.start()
-            while True:
-                message = await self.websocket.recv()
-                print(self.receive_message(message))
-                print(self._body.get_drawable())
-                if self._body.is_dead():
-                    self.setup()
+        self.websocket = websocket.WebSocket()
+        self.websocket.connect("ws://" + self.ip + ":8080")
+        self.send_username()
+        self._inputThread.start()
+        while True:
+            message = self.websocket.recv()
+            print(message)
+            print(self.receive_message(message))
+            print(self._body.get_drawable())
+            if self._body.is_dead():
+                self.setup()
 
     def read_input(self):
         while True:
@@ -36,6 +38,7 @@ class Game:
             while len(letter) != 1:
                 letter = input("Enter a letter:")
             self.send_letter(letter)
+            self.read_input()
             
     def send_username(self):
         self.websocket.send(json.dumps({"type": "SET_NAME", "data": self.username}))
@@ -64,6 +67,7 @@ class Game:
         delta = incorrectCount - self._incorrectCount
         for i in range(delta):
             self.add_body_part()
+        self._incorrectCount = incorrectCount
         return result
 
 
@@ -79,6 +83,8 @@ class Game:
         return result
 
     def add_body_part(self):
+        if self._body.is_dead():
+            return
         self._body.add_part(self._parts[self._partIndex])
         self._partIndex += 1
 

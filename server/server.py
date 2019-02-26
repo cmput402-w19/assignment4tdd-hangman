@@ -33,19 +33,20 @@ async def handler(websocket, path):
     await register(websocket)
     try:
         await websocket.send(json.dumps(game.get_game_state()))
-        async for message in websocket:
-            data = json.loads(message)
-            print(data)
-            if data["type"] == "GUESS":
-                res = game.guess(data["data"])
-                if res:
-                    PLAYERS[websocket].increment_correct()
-                else:
-                    PLAYERS[websocket].increment_incorrect()
+        while True:
+            async for message in websocket:
+                print(message)
+                data = json.loads(message)
+                if data["type"] == "GUESS":
+                    res = game.guess(data["data"])
+                    if res:
+                        PLAYERS[websocket].increment_correct()
+                    else:
+                        PLAYERS[websocket].increment_incorrect()
 
-                await notify_players()
-            elif data["type"] == "SET_NAME":
-                PLAYERS[websocket].set_name(data["data"])
+                    await notify_players()
+                elif data["type"] == "SET_NAME":
+                    PLAYERS[websocket].set_name(data["data"])
 
     finally:
         await unregister(websocket)

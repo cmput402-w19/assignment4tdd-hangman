@@ -6,6 +6,7 @@ class Game:
     def __init__(self):
         self.correct = []
         self.incorrect = []
+        word = self.generate_word()
 
     def generate_word(self):
         """Generates a word to use in the game"""

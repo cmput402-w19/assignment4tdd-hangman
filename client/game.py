@@ -10,11 +10,14 @@ class Game:
     def __init__(self, ip, username):
         self.ip = ip
         self.username = username
-        self._body = Body()
         self._parts = [Noose(), Head(), Torso(), LeftArm(), RightArm(), LeftLeg(), RightLeg()]
+        self.setup()
+        self._inputThread = threading.Thread(target=self.read_input, args=[])
+
+    def setup(self):
+        self._body = Body()
         self._partIndex = 0
         self._incorrectCount = 0
-        self._inputThread = threading.Thread(target=self.read_input, args=[])
 
     async def start(self):
         async with websockets.connect("ws://" + self.ip + ":8080") as self.websocket:
@@ -22,7 +25,10 @@ class Game:
             self._inputThread.start()
             while True:
                 message = await self.websocket.recv()
-                print(message)
+                print(self.receive_message(message))
+                print(self._body.get_drawable())
+                if self._body.is_dead():
+                    self.setup()
 
     def read_input(self):
         while True:
@@ -78,10 +84,3 @@ class Game:
 
     def get_body(self):
         return self._body
-
-
-if __name__ == '__main__':
-    ip = sys.argv[1]
-    username = sys.argv[2]
-    game = Game(ip, username)
-    asyncio.get_event_loop().run_until_complete(game.start())

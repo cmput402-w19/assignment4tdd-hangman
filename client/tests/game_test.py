@@ -10,6 +10,9 @@ class GameTestCase(unittest.TestCase):
         self.username = "Bob"
         self.ip = "localhost"
         self.game = Game(self.ip, self.username)
+        self.game.websocket = mock.Mock()
+        self.game.websocket.send = mock.Mock()
+        self.game.websocket.recv = mock.Mock()
 
     def tearDown(self):
         self.game = None
@@ -21,9 +24,8 @@ class GameTestCase(unittest.TestCase):
         expectedMessage["type"] = "SET_NAME"
         expectedMessage["data"] = self.username
 
-        with mock.patch("client.game.websockets") as mockWebSockets:
-            self.game.send_username()
-            mockWebSockets.send.assert_called_once_with(json.dumps(expectedMessage))
+        self.game.send_username()
+        self.game.websocket.send.assert_called_once_with(json.dumps(expectedMessage))
         
     def test_send_letter(self):
         letter = "a"
@@ -31,23 +33,20 @@ class GameTestCase(unittest.TestCase):
         expectedMessage["type"] = "GUESS"
         expectedMessage["data"] = letter
 
-        with mock.patch("client.game.websockets") as mockWebSockets:
-            self.game.send_letter(letter)
-            mockWebSockets.send.assert_called_once_with(json.dumps(expectedMessage))
+        self.game.send_letter(letter)
+        self.game.websocket.send.assert_called_once_with(json.dumps(expectedMessage))
 
     def test_send_long_letters(self):
         letter = "abc"
 
-        with mock.patch("client.game.websockets") as mockWebSockets:
-            self.game.send_letter(letter)
-            mockWebSockets.send.assert_not_called()
+        self.game.send_letter(letter)
+        self.game.websocket.send.assert_not_called()
 
     def test_send_invalid_letter(self):
         letter = "?"
 
-        with mock.patch("client.game.websockets") as mockWebSockets:
-            self.game.send_letter(letter)
-            mockWebSockets.send.assert_not_called()
+        self.game.send_letter(letter)
+        self.game.websocket.send.assert_not_called()
 
     def test_receive_message_state(self):
         expectedMessage = """{
@@ -104,7 +103,7 @@ class GameTestCase(unittest.TestCase):
         }
         """
         result = self.game.receive_state(json.loads(expectedMessage))
-        self.assertEqual(result, "Word: _ _ A\nCorrect: [a]\nIncorrect: [d, e]")
+        self.assertEqual(result, "Word: _ _ a\nCorrect: ['a']\nIncorrect: ['d', 'e']")
 
     def test_receive_termination(self):
         expectedMessage = """{
@@ -120,13 +119,13 @@ class GameTestCase(unittest.TestCase):
             }
         }
         """
-        result = self.game.receive_state(json.loads(expectedMessage))
+        result = self.game.receive_termination(json.loads(expectedMessage))
         self.assertEqual(result, "You Won!\nScore: Correct:Incorrect\nAlice: 1:2")
 
     def test_add_body_part(self):
         for i in range(7):
             self.game.add_body_part()
-            self.assertIs(self.game.get_body().get_part_count(), i)
+            self.assertIs(self.game.get_body().get_part_count(), i + 1)
 
 if __name__ == '__main__':
     unittest.main()

@@ -17,7 +17,7 @@ class Game:
         self._inputThread = threading.Thread(target=self.read_input, args=[])
 
     async def start(self):
-        async with websockets.connect("ws://" + self.ip + ":80") as self.websocket:
+        async with websockets.connect("ws://" + self.ip + ":8080") as self.websocket:
             self.send_username()
             self._inputThread.start()
             while True:
@@ -39,7 +39,8 @@ class Game:
             return
         if not letter.isalpha():
             return
-        self.websocket.send(json.dumps({"type": "GUESS", "data": letter}))
+        data = json.dumps({"type": "GUESS", "data": letter})
+        self.websocket.send(data)
 
     def receive_message(self, message):
         messageDict = json.loads(message)

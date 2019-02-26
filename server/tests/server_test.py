@@ -15,7 +15,7 @@ class TestServer(TestCase):
         self.mockGame.guess = mock.MagicMock()
         self.mockGame.guess.return_value = True
         self.mockGame.get_game_state = mock.MagicMock()
-        self.mockGame.get_game_state.return_value = {"word": "_ e _ _ _ e _", "correct": ["e"], "incorrect": ["y"]}
+        self.mockGame.get_game_state.return_value = {"type": "UPDATE_STATE", "data": {"word": "_ e _ _ _ e _", "correct": ["e"], "incorrect": ["y"]}}
 
     # def test_register(self):
     #     server.register(self.mockSocket)

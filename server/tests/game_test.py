@@ -55,11 +55,11 @@ class TestGame(TestCase):
 
     def test_get_game_state_new(self):
         self.game.word = "sleeping"
-        self.assertEqual(self.game.get_game_state(), {"word": "_ _ _ _ _ _ _ _", "correct": [], "incorrect": []})
+        self.assertEqual(self.game.get_game_state(), {"type": "UPDATE_STATE", "data": {"word": "_ _ _ _ _ _ _ _", "correct": [], "incorrect": []}})
 
     def test_get_game_state(self):
         self.game.word = "sleeping"
         self.game.correct = ['e']
         self.game.incorrect = ['t', 'a']
 
-        self.assertEqual(self.game.get_game_state(), {"word": "_ _ e e _ _ _ _", "correct": ['e'], "incorrect": ['t', 'a']} )
+        self.assertEqual(self.game.get_game_state(), {"type": "UPDATE_STATE", "data": {"word": "_ _ e e _ _ _ _", "correct": ['e'], "incorrect": ['t', 'a']}} )

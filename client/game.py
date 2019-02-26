@@ -58,6 +58,7 @@ class Game:
         delta = incorrectCount - self._incorrectCount
         for i in range(delta):
             self.add_body_part()
+        result += self._body.get_drawable()
         return result
 
 

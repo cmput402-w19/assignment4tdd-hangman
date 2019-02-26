@@ -3,19 +3,15 @@ import server.game as game
 
 class TestGame(TestCase):
     def setUp(self):
-        self.game = game.Game()
+        with mock.patch(game.__name__ + ".Datamuse.words", return_value=[{'score': 1, 'word': 'orange'}, {'score': 1, 'word': 'the'}]):
+            self.game = game.Game()
 
     def test_generate_word(self):
-        with mock.patch(game.__name__ + ".Datamuse.words", return_value=[{'score': 1, 'word':'orange'}]) as MockDatamuseAPI:
-            word = self.game.generate_word()
-            self.assertEqual(word, "orange")
-
-    def test_generate_word_greater_than_5(self):
         with mock.patch(game.__name__ + ".Datamuse.words", return_value=[{'score': 1, 'word': 'orange'}, {'score': 1, 'word': 'the'}]):
             word = self.game.generate_word()
 
-            self.assertEqual(word, "orange")
-            self.assertTrue(len(word) > 5)
+        self.assertEqual(word, "orange")
+        self.assertTrue(len(word) > 5)
 
     def test_guess_correct_lowercase(self):
         self.game.word = "test"

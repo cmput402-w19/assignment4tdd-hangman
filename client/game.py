@@ -22,7 +22,8 @@ class Game:
             self._inputThread.start()
             while True:
                 message = await self.websocket.recv()
-                print(message)
+                print(self.receive_message(message))
+                print(self._body.get_drawable())
 
     def read_input(self):
         while True:
@@ -58,7 +59,6 @@ class Game:
         delta = incorrectCount - self._incorrectCount
         for i in range(delta):
             self.add_body_part()
-        result += self._body.get_drawable()
         return result
 
 
